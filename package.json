@@ -1,0 +1,17 @@
+{
+  "name": "figma-plugin-playground",
+  "version": "1.0.0",
+  "description": "Playground Plugin",
+  "scripts": {
+    "test": "tsc -p src --noEmit",
+    "build": "esbuild src/code.ts --bundle --outfile=dist/code.js",
+    "dev": "npm run build -- --watch"
+  },
+  "author": "Jake Albaugh",
+  "license": "MIT License",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.37.0",
+    "esbuild": "^0.14.11",
+    "typescript": "^4.3.5"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Figma Plugin Playground",
+  "id": "jake-albaugh-figma-plugin-playground",
+  "api": "1.0.0",
+  "editorType": ["figma"],
+  "permissions": [],
+  "main": "dist/code.js"
+}
