@@ -1,4 +1,9 @@
-import { runColorTheme, runRetrieveData } from "./demos";
+import { runColorTheme, runFetchJSON, runFillWithImageUrl } from "./demos";
 
 // runColorTheme();
-// runRetrieveData();
+// runFetchJSON();
+runFillWithImageUrl();
+
+// exec string as js?
+
+// plugin + REST ui builder idea

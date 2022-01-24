@@ -12,7 +12,7 @@ export function colorTheme() {
 
     <style>
     body {
-      background: var(--figma-token-background-color);
+      background: #F00;
       color: var(--figma-token-text-color);
     }
     </style>
