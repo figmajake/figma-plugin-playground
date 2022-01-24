@@ -8,6 +8,31 @@ interface MessageSuccess<T> {
 }
 type Message<T> = MessageError | MessageSuccess<T>;
 
+export function execBrowserFunction<T>(fn: () => Promise<T>): Promise<T> {
+  return new Promise((resolve, reject) => {
+    figma.showUI(
+      `<script>
+        (async () => {
+          try {
+            const data = await (${fn})();
+            parent.postMessage({ pluginMessage: { type: "success", data  }}, "*");
+          } catch({ message }) {
+            parent.postMessage({ pluginMessage: { type: "error", data: message } }, "*");
+          }
+        })();
+      </script>`,
+      { visible: false }
+    );
+    figma.ui.onmessage = async (message: Message<T>) => {
+      if (message.type === "success") {
+        resolve(message.data);
+      } else {
+        reject(Error(message.data));
+      }
+    };
+  });
+}
+
 export async function fetchJSON<T>(url: string): Promise<T> {
   return new Promise((resolve, reject) => {
     figma.showUI(
@@ -101,7 +126,5 @@ export async function fillWithImageUrl(
     };
   });
 }
-
-// resize function
 
 // get form data

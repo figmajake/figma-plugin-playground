@@ -1,7 +1,22 @@
-import { fetchJSON, fillWithImageUrl } from "./helpers";
+import { execBrowserFunction, fetchJSON, fillWithImageUrl } from "./helpers";
+export { animation as runAnimation } from "./animation";
 export { colorTheme as runColorTheme } from "./colorTheme";
 
 const { closePlugin, currentPage, notify } = figma;
+
+export async function runExecBrowserFunction() {
+  const valueFromBrowser = await execBrowserFunction<string>(
+    () =>
+      new Promise((resolve) => {
+        // We are now in the web browser and not the figma context!
+        setTimeout(() => {
+          resolve(performance.now());
+        }, 1000);
+      })
+  );
+  console.log(valueFromBrowser);
+  closePlugin();
+}
 
 export async function runFetchJSON() {
   interface UserData {
