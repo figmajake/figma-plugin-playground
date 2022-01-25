@@ -7,7 +7,7 @@ import {
 } from "./demos";
 
 // runAnimation();
-// runColorTheme();
+runColorTheme();
 // runExecBrowserFunction();
 // runFetchJSON();
 // runFillWithImageUrl();

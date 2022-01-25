@@ -9,8 +9,10 @@ export async function runExecBrowserFunction() {
     () =>
       new Promise((resolve) => {
         // We are now in the web browser and not the figma context!
+        const el = document.createElement("h1");
+        el.innerText = "Hello World";
         setTimeout(() => {
-          resolve(performance.now());
+          resolve(el.outerHTML);
         }, 1000);
       })
   );
@@ -28,13 +30,15 @@ export async function runFetchJSON() {
 
   try {
     // this should retrieve data. be sure to visit url first
-    const data = await fetchJSON<UserData[]>(
-      "https://cors-anywhere.herokuapp.com/https://jsonkeeper.com/b/RWNQ"
-    );
-    console.log("DATA!", data);
-    console.log("FIRST AVATAR!", data[0].avatar);
+    const data = await fetchJSON<any[]>("https://records.jake.fun/data.json");
+    console.log(data);
+    // const data = await fetchJSON<UserData[]>(
+    //   "https://cors-anywhere.herokuapp.com/https://jsonkeeper.com/b/RWNQ"
+    // );
+    // console.log("DATA!", data);
+    // console.log("FIRST AVATAR!", data[0].avatar);
     // this should fail
-    await fetchJSON<UserData[]>("https://cheese.meatballs");
+    // await fetchJSON<UserData[]>("https://cheese.meatballs");
     closePlugin();
   } catch (error: any) {
     notify(error.message, { error: true });

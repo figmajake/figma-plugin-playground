@@ -1,28 +1,31 @@
 export function animation() {
   figma.showUI(
-    `<script>
+    `<canvas></canvas>
+    <script>
+      const canvas = document.querySelector("canvas");
+      const context = canvas.getContext("2d");
       window.onmessage = async (event) => {
-        const { x, y, width, height, di } = event.data.pluginMessage;
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.width = width;
-        canvas.height = height;
-        context.fillStyle = "red";
-        context.fillRect(0, 0, width, height);
-        context.fillStyle = "black";
-        context.fillRect(x, y, di, di);
-        canvas.toBlob((blob) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            parent.postMessage({ 
-              pluginMessage: new Uint8Array(reader.result) 
-            }, "*");
-          }
-          reader.readAsArrayBuffer(blob);
-        });
+        requestAnimationFrame(() => {
+          const { x, y, width, height, di } = event.data.pluginMessage;
+          canvas.width = width;
+          canvas.height = height;
+          context.fillStyle = "red";
+          context.fillRect(0, 0, width, height);
+          context.fillStyle = "black";
+          context.fillRect(x, y, di, di);
+          canvas.toBlob((blob) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              parent.postMessage({ 
+                pluginMessage: new Uint8Array(reader.result) 
+              }, "*");
+            }
+            reader.readAsArrayBuffer(blob);
+          });
+        })
       }
     </script>`,
-    { visible: false }
+    { visible: true }
   );
   const width = 100;
   const height = 100;
@@ -37,9 +40,12 @@ export function animation() {
 
   figma.ui.onmessage = async (value: Uint8Array) => {
     image = figma.createImage(value);
-    const fills: Paint[] = [
-      { type: "IMAGE", imageHash: image.hash, scaleMode: "FILL" },
-    ];
+    node.fills = node.fills as Paint[];
+    const fills: Paint[] = node.fills.slice(
+      node.fills.length - 3,
+      node.fills.length
+    );
+    fills.push({ type: "IMAGE", imageHash: image.hash, scaleMode: "FILL" });
     node.fills = fills;
     getFrame();
   };
