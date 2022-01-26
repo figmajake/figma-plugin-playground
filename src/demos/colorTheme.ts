@@ -47,7 +47,7 @@ export function colorTheme() {
 }
 
 /**
- * This is spoofing a UA or CDN hosted Figma stylesheet.
+ * This is spoofing injected or CDN hosted Figma stylesheet.
  * It is maintained by Figma, and has tokens / classnames for all supported themes.
  */
 function spoofingCdnOrInjectedFigmaCss() {
