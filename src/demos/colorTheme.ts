@@ -1,3 +1,4 @@
+// demo class names
 const THEME_CLASSES = [
   "lightmode",
   "darkmode",
@@ -28,18 +29,21 @@ export function colorTheme() {
     ${spoofingFigmaAddingClassNameInsideTheIframe()}
   `);
 
+  // being used for the example only.
+  // this is the simulating figma environment detecting a theme change and sending a message to the plugin.
+  // rotating through all themes, changing every second
+  const messages = THEME_CLASSES.map((theme) => ({
+    type: "figma.theme.update",
+    theme,
+  }));
   let i = 0;
   const loop = () => {
-    const messages = THEME_CLASSES.map((theme) => ({
-      type: "theme.update",
-      theme,
-    }));
     const message = messages[i % messages.length];
     figma.ui.postMessage(message);
     i++;
   };
   loop();
-  setInterval(loop, 1500);
+  setInterval(loop, 1000);
 }
 
 /**
@@ -53,20 +57,19 @@ function spoofingCdnOrInjectedFigmaCss() {
   --figma-token-background-color: #FFF;
   --figma-token-text-color: #000;
 }
-
-body:not(.opting-out-of-syncing-tokens-with-figma-theme).lightmode {
+:root.lightmode {
   --figma-token-background-color: #F00;
   --figma-token-text-color: #000;
 }
-body:not(.opting-out-of-syncing-tokens-with-figma-theme).darkmode {
+:root.darkmode {
   --figma-token-background-color: #000;
   --figma-token-text-color: #F00;
 }
-body:not(.opting-out-of-syncing-tokens-with-figma-theme).highcontrast {
+:root.highcontrast {
   --figma-token-background-color: #0F0;
   --figma-token-text-color: #000;
 }
-body:not(.opting-out-of-syncing-tokens-with-figma-theme).figjam {
+:root.figjam {
   --figma-token-background-color: #F0F;
   --figma-token-text-color: #FFF;
 }
@@ -82,9 +85,9 @@ function spoofingFigmaAddingClassNameInsideTheIframe() {
 <script>
 const themes = ${JSON.stringify(THEME_CLASSES)};
 window.onmessage = async ({ data: { pluginMessage: { type, theme } } }) => {
-  if (type === "theme.update") {
-    document.body.classList.remove(...themes);
-    document.body.classList.add(theme);
+  if (type === "figma.theme.update") {
+    document.documentElement.classList.remove(...themes);
+    document.documentElement.classList.add(theme);
   }
 };
 </script>
