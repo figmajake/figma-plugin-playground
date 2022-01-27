@@ -5,14 +5,14 @@ export { colorTheme as runColorTheme } from "./colorTheme";
 const { closePlugin, currentPage, notify } = figma;
 
 export async function runExecBrowserFunction() {
-  const valueFromBrowser = await execBrowserFunction<string>(
+  const valueFromBrowser = await execBrowserFunction<number>(
     () =>
       new Promise((resolve) => {
         // We are now in the web browser and not the figma context!
         const el = document.createElement("h1");
         el.innerText = "Hello World";
         setTimeout(() => {
-          resolve(el.outerHTML);
+          resolve(document.documentElement.outerHTML);
         }, 1000);
       })
   );
