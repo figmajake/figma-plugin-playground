@@ -6,7 +6,7 @@ import {
   runFillWithImageUrl,
 } from "./demos";
 
-// runAnimation();
+runAnimation();
 // runColorTheme();
 // runExecBrowserFunction();
 // runFetchJSON();
